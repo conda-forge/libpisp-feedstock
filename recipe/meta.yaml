@@ -1,16 +1,20 @@
-{% set name = "libpisp" %}
 {% set version = "1.2.0" %}
 
 package:
-  name: {{ name }}
+  name: libpisp
   version: {{ version }}
 
 source:
-  url: https://github.com/raspberrypi/{{ name }}/archive/v{{ version }}.tar.gz
+  url: https://github.com/raspberrypi/libpisp/archive/v{{ version }}.tar.gz
   sha256: 8de714f82b8c20277a1241d10b4b809ce562b7cc56f977d9f5c0f92669d5e417
 build:
-  number: 0
+  number: 1
   skip: true  # [not linux]
+  run_exports:
+    # Just a guess, their versionnning has been a little
+    # inconsistent according to their tags.
+    # We can release this later if we feel like it.
+    - {{ pin_subpackage('libpisp', max_pin='x.x.x') }}
 
 requirements:
   build:
