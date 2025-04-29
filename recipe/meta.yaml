@@ -1,4 +1,4 @@
-{% set version = "1.2.0" %}
+{% set version = "1.2.1" %}
 
 package:
   name: libpisp
@@ -6,9 +6,9 @@ package:
 
 source:
   url: https://github.com/raspberrypi/libpisp/archive/v{{ version }}.tar.gz
-  sha256: 8de714f82b8c20277a1241d10b4b809ce562b7cc56f977d9f5c0f92669d5e417
+  sha256: bb4088fc96ca23c29541f0e6e8478463bd7182b13c16d61b3e8d826158315c09
 build:
-  number: 1
+  number: 0
   skip: true  # [not linux]
   run_exports:
     # Just a guess, their versionnning has been a little
