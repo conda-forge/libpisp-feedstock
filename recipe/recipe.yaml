@@ -17,22 +17,22 @@ build:
 
 requirements:
   build:
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
     - meson
     - ninja
     - python
     - pkg-config
-    - ${{ compiler('cxx') }}
-    - ${{ compiler('c') }}
-    - ${{ stdlib('c') }}
   host:
     - nlohmann_json
   run_exports:
     - ${{ pin_subpackage('libpisp', upper_bound='x.x.x') }}
 
 tests:
-  - script:
-      - test -f $PREFIX/lib/libpisp.so
-
+  - package_contents:
+      lib:
+        - pisp
 about:
   summary: Library for interfacing with the Raspberry Pi PISP
   license: BSD-3-Clause
