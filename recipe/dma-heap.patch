@@ -1,0 +1,46 @@
+--- a/src/helpers/dma_heap.hpp
++++ b/src/helpers/dma_heap.hpp
+@@ -8,7 +8,53 @@
+ #pragma once
+ 
+ #include <fcntl.h>
++#include <linux/ioctl.h>
++#include <linux/types.h>
+ #include <linux/dma-buf.h>
+-#include <linux/dma-heap.h>
++
++/* Provide dma-heap definitions if not available in kernel headers */
++#ifndef _UAPI_LINUX_DMABUF_POOL_H
++#define _UAPI_LINUX_DMABUF_POOL_H
++
++#define DMA_HEAP_VALID_FD_FLAGS (O_CLOEXEC | O_ACCMODE)
++#define DMA_HEAP_VALID_HEAP_FLAGS (0ULL)
++
++struct dma_heap_allocation_data {
++	__u64 len;
++	__u32 fd;
++	__u32 fd_flags;
++	__u64 heap_flags;
++};
++
++#define DMA_HEAP_IOC_MAGIC		'H'
++#define DMA_HEAP_IOCTL_ALLOC	_IOWR(DMA_HEAP_IOC_MAGIC, 0x0,\
++				      struct dma_heap_allocation_data)
++
++#endif /* _UAPI_LINUX_DMABUF_POOL_H */
++
++/* Try to include the system header if available */
++#ifdef __has_include
++	#if __has_include(<linux/dma-heap.h>)
++		#undef DMA_HEAP_VALID_FD_FLAGS
++		#undef DMA_HEAP_VALID_HEAP_FLAGS
++		#undef dma_heap_allocation_data
++		#undef DMA_HEAP_IOC_MAGIC
++		#undef DMA_HEAP_IOCTL_ALLOC
++		#undef _UAPI_LINUX_DMABUF_POOL_H
++		#include <linux/dma-heap.h>
++	#endif
++#endif
++
+ #include <sys/ioctl.h>
+ #include <vector>

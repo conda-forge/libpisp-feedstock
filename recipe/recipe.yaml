@@ -10,6 +10,8 @@ package:
 source:
   url: https://github.com/raspberrypi/libpisp/archive/v${{ version }}.tar.gz
   sha256: 314c6caea5c753f4b353df131d8b8626b70bfa38b76d8658698918cc0f7c1614
+  patches:
+    - dma-heap.patch
 
 build:
   number: 0
