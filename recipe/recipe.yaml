@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "1.4.0"
+  version: "1.5.0"
 
 package:
   name: libpisp
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://github.com/raspberrypi/libpisp/archive/v${{ version }}.tar.gz
-  sha256: 314c6caea5c753f4b353df131d8b8626b70bfa38b76d8658698918cc0f7c1614
+  sha256: c38c450ce96724c8dd8389ca57faceaae5e5a3db72d594558901352a2bc89e79
   patches:
     - dma-heap.patch
 
