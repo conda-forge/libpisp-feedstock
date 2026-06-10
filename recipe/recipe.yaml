@@ -14,7 +14,7 @@ source:
     - dma-heap.patch
 
 build:
-  number: 0
+  number: 1
   skip: not linux
 
 requirements:
@@ -35,6 +35,8 @@ tests:
   - package_contents:
       lib:
         - pisp
+      files:
+        - lib/libpisp/backend/backend_default_config.json
 about:
   summary: Library for interfacing with the Raspberry Pi PISP
   license: BSD-3-Clause
