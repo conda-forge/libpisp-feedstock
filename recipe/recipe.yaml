@@ -32,7 +32,7 @@ requirements:
     # lookups of libpisp fail without it (header-only, so this is cheap).
     - nlohmann_json
   run_exports:
-    - ${{ pin_subpackage('libpisp', upper_bound='x.x.x') }}
+    - ${{ pin_subpackage('libpisp', upper_bound='x.x') }}
 
 tests:
   - package_contents:
