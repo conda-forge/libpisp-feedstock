@@ -5,7 +5,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/libpisp-feedsto
 
 Home: https://github.com/raspberrypi/libpisp
 
-Package license: BSD-3-Clause
+Package license: BSD-2-Clause AND GPL-2.0-only WITH Linux-syscall-note
 
 Summary: Library for interfacing with the Raspberry Pi PISP
 
