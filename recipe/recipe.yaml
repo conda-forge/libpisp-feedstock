@@ -24,9 +24,12 @@ requirements:
     - ${{ stdlib('c') }}
     - meson
     - ninja
-    - python
     - pkg-config
   host:
+    - nlohmann_json
+  run:
+    # libpisp.pc lists nlohmann_json in Requires.private, so pkg-config/meson
+    # lookups of libpisp fail without it (header-only, so this is cheap).
     - nlohmann_json
   run_exports:
     - ${{ pin_subpackage('libpisp', upper_bound='x.x.x') }}
@@ -35,12 +38,26 @@ tests:
   - package_contents:
       lib:
         - pisp
+      include:
+        - libpisp/backend/backend.hpp
+        - libpisp/frontend/frontend.hpp
       files:
+        - lib/pkgconfig/libpisp.pc
         - lib/libpisp/backend/backend_default_config.json
+        - share/libpisp/backend_default_config.json
+  - script:
+      - pkg-config --exists --print-errors libpisp
+      - test "$(pkg-config --modversion libpisp)" = "${{ version }}"
+    requirements:
+      run:
+        - pkg-config
+
 about:
   summary: Library for interfacing with the Raspberry Pi PISP
-  license: BSD-3-Clause
-  license_file: LICENSE
+  license: BSD-2-Clause AND GPL-2.0-only WITH Linux-syscall-note
+  license_file:
+    - LICENSE
+    - LICENSES/
   homepage: https://github.com/raspberrypi/libpisp
 
 extra:

@@ -5,9 +5,10 @@ set -exo pipefail
 mkdir -p build
 
 meson setup build ${MESON_ARGS} \
+    -Dwerror=false \
     -Dlogging=disabled \
-    -Dc_args=-Wno-unused-parameter \
-    -Dcpp_args=-Wno-unused-parameter
+    -Dexamples=false \
+    -Dgstreamer=disabled
 meson compile -C build
 meson install -C build
 
