@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "1.7.0"
+  version: "1.8.0"
 
 package:
   name: libpisp
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://github.com/raspberrypi/libpisp/archive/v${{ version }}.tar.gz
-  sha256: 45e3e0fa21f893d9edb6dae8118c5af6aaf74a9c9d5b8ed120a95531e0b13f2b
+  sha256: 753a31b907258e05070215be515a4051bb76bcbad3d74293d779cbb5f59446d4
   patches:
     - dma-heap.patch
 
@@ -24,23 +24,40 @@ requirements:
     - ${{ stdlib('c') }}
     - meson
     - ninja
-    - python
     - pkg-config
   host:
     - nlohmann_json
+  run:
+    # libpisp.pc lists nlohmann_json in Requires.private, so pkg-config/meson
+    # lookups of libpisp fail without it (header-only, so this is cheap).
+    - nlohmann_json
   run_exports:
-    - ${{ pin_subpackage('libpisp', upper_bound='x.x.x') }}
+    - ${{ pin_subpackage('libpisp', upper_bound='x.x') }}
 
 tests:
   - package_contents:
       lib:
         - pisp
+      include:
+        - libpisp/backend/backend.hpp
+        - libpisp/frontend/frontend.hpp
       files:
+        - lib/pkgconfig/libpisp.pc
         - lib/libpisp/backend/backend_default_config.json
+        - share/libpisp/backend_default_config.json
+  - script:
+      - pkg-config --exists --print-errors libpisp
+      - test "$(pkg-config --modversion libpisp)" = "${{ version }}"
+    requirements:
+      run:
+        - pkg-config
+
 about:
   summary: Library for interfacing with the Raspberry Pi PISP
-  license: BSD-3-Clause
-  license_file: LICENSE
+  license: BSD-2-Clause AND GPL-2.0-only WITH Linux-syscall-note
+  license_file:
+    - LICENSE
+    - LICENSES/
   homepage: https://github.com/raspberrypi/libpisp
 
 extra:
